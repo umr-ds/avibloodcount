@@ -1,0 +1,43 @@
+# Based on https://github.com/aim-uofa/AdelaiDet/blob/master/configs/CondInst/MS_R_101_BiFPN_3x_sem.yaml
+
+_BASE_: "Base-CondInst.yaml"
+VERSION: 2
+MODEL:
+  WEIGHTS: "models/model_final.pth"  #"configs/CondInst/model_final_f6e8b1.pkl"
+  BACKBONE:
+    NAME: "build_fcos_resnet_bifpn_backbone"
+  RESNETS:
+    DEPTH: 101
+  BiFPN:
+    IN_FEATURES: ["res3", "res4", "res5"]
+    OUT_CHANNELS: 160
+    NORM: "SyncBN" #BN
+  CONDINST:
+    MASK_BRANCH:
+      SEMANTIC_LOSS_ON: True
+  FCOS:
+    NUM_CLASSES: 7
+    POST_NMS_TOPK_TEST: 500
+    POST_NMS_TOPK_TRAIN: 500
+    PRE_NMS_TOPK_TEST: 2500
+    PRE_NMS_TOPK_TRAIN: 2500
+    NMS_TH: 0.05
+    INFERENCE_TH_TEST: 0.0025
+    INFERENCE_TH_TRAIN: 0.0025
+  SEM_SEG_HEAD:
+    NUM_CLASSES: 7
+SOLVER:
+  STEPS: (13000, 15333)
+  MAX_ITER: 16660
+  BASE_LR: 0.001
+  IMS_PER_BATCH: 4
+  REFERENCE_WORLD_SIZE: 1
+  CHECKPOINT_PERIOD: 30000
+DATASETS:
+  TRAIN: ("train",)
+  TEST: ("val",)
+TEST:
+  EVAL_PERIOD: 30000
+  DETECTIONS_PER_IMAGE: 500
+INPUT:
+  MASK_FORMAT: bitmask

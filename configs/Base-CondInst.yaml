@@ -1,0 +1,22 @@
+# Based on https://github.com/aim-uofa/AdelaiDet/blob/master/configs/CondInst/Base-CondInst.yaml
+
+VERSION: 2
+MODEL:
+  META_ARCHITECTURE: "CondInst"
+  MASK_ON: True
+  BACKBONE:
+    NAME: "build_fcos_resnet_fpn_backbone"
+  RESNETS:
+    OUT_FEATURES: ["res3", "res4", "res5"]
+  FPN:
+    IN_FEATURES: ["res3", "res4", "res5"]
+  PROPOSAL_GENERATOR:
+    NAME: "FCOS"
+  FCOS:
+    THRESH_WITH_CTR: True
+    USE_SCALE: True
+  CONDINST:
+    MAX_PROPOSALS: 2500
+INPUT:
+  MIN_SIZE_TRAIN: (800,)
+  MAX_SIZE_TRAIN: 1067

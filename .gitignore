@@ -1,0 +1,4 @@
+.idea/
+*.onnx
+*.pth
+*.svs
