@@ -37,19 +37,22 @@ You can modify several parameters by passing them trailing the `docker run comma
 
 ## Scientific Usage & Citation
 
-If you are using this software in academia, we'd appreciate if you cited our [scientific research paper](#) as follows:
+If you are using this software in academia, we'd appreciate if you cited our [scientific research paper](https://doi.org/10.3390/birds5010004) as follows:
 
-> M. Vogelbacher. F. Strehmann, H. Bellafkir, M. Mühling, N. Korfhage, D. Schneider, S. Rösner, D. G. Schabo, N. Farwig, and B. Freisleben, "Identifying and Counting Avian Blood Cells in Whole Slide Images", Submitted for publication, 2024.
+> Vogelbacher, M.; Strehmann, F.; Bellafkir, H.; Mühling, M.; Korfhage, N.; Schneider, D.; Rösner, S.; Schabo, D.G.; Farwig, N.; Freisleben, B. Identifying and Counting Avian Blood Cells in Whole Slide Images via Deep Learning. Birds 2024, 5, 48-66. https://doi.org/10.3390/birds5010004
 
 ```bibtex
 @article{vogelbacher2024identifying,
   title = {{Identifying and Counting Avian Blood Cells in Whole Slide Images}},
   author = {Vogelbacher, Markus and Strehmann, Finja and Bellafkir, Hicham and M{\"u}hling, Markus and Korfhage, Nikolaus and Schneider, Daniel and R{\"o}sner, Sascha and Schabo, Dana G. and Farwig, Nina and Freisleben, Bernd},
-  booktitle = {Submitted for publication.},
+  journal = {Birds},
+  volume = {5},
   year = {2024},
-  month = Jan,
-  journal = {},
+  number = {1},
+  pages = {48--66},
+  url = {https://www.mdpi.com/2673-6004/5/1/4},
+  issn = {2673-6004},
   keywords = {cell segmentation, bird blood analysis, microscopy images, blood smear images, object detection, ornithology},
-  doi = {},
+  doi = {10.3390/birds5010004},
 }
 ```
