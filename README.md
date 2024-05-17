@@ -17,7 +17,7 @@ To build the docker image go to the `docker` directory and run the following com
 ## Usage
 ### Preparation
 1. Download our trained models, i.e., `efficientNet_B0.onnx` and `condInst_R101.pth` from [here](https://data.uni-marburg.de/handle/dataumr/250) to `./models`. 
-2. Place the SVS files to be processed in `./input`. We provide several example SVS files at the above link.
+2. Place the SVS files to be processed in `./input`. We provide several example [SVS files](https://dshare.mathematik.uni-marburg.de/index.php/s/if5Y2KmSAX5rMLG).
 
 ### Run inference
 Running the Docker image as follows automatically starts inference with default parameters on all SVS files located at `./data`:
