@@ -106,7 +106,7 @@ def main_loop(svs_files):
         del counts[model.class_ids['5']]
         # loc_end = time.time()
         # print(time.strftime("%Hh%Mm%Ss", time.gmtime(loc_end - loc_start)))
-        with open(args.output_dir + filename, 'w') as f:
+        with open(args.output_dir + filename + ".txt", 'w') as f:
             json.dump(counts, f)
         model.reset_counter()
 
