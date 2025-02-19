@@ -1,6 +1,6 @@
 # Based on https://github.com/facebookresearch/detectron2/docker/Dockerfile
 
-FROM nvidia/cuda:11.1.1-cudnn8-devel-ubuntu18.04
+FROM nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
 # use an older system (18.04) to avoid opencv incompatibility (issue#3524)
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -16,14 +16,16 @@ USER appuser
 WORKDIR /home/appuser
 
 ENV PATH="/home/appuser/.local/bin:${PATH}"
-RUN wget https://bootstrap.pypa.io/pip/3.6/get-pip.py && \
+RUN wget https://bootstrap.pypa.io/pip/get-pip.py && \
         python3 get-pip.py && \
         rm get-pip.py
 
 # install dependencies
 # See https://pytorch.org/ for other options if you use a different version of CUDA
 RUN pip install cmake  # cmake from apt-get is too old
-RUN pip install torch==1.10 torchvision==0.11.1 -f https://download.pytorch.org/whl/cu111/torch_stable.html
+RUN pip install torch==1.11.0 torchvision==0.12.0 -f https://download.pytorch.org/whl/cu113/torch_stable.html
+RUN pip install setuptools==59.5.0
+RUN pip install "numpy<2.0.0" "Pillow<10.0.0"
 
 RUN pip install 'git+https://github.com/facebookresearch/fvcore'
 # install detectron2
@@ -39,9 +41,12 @@ ENV TORCH_CUDA_ARCH_LIST="${TORCH_CUDA_ARCH_LIST}"
 RUN pip install -e detectron2_repo
 
 RUN git clone https://github.com/aim-uofa/AdelaiDet.git adet
+RUN sed -i 's/Pillow>=6.0/Pillow<10.0/' adet/setup.py
+COPY ml_nms.cu /home/appuser/adet/adet/layers/csrc/ml_nms/ml_nms.cu
+RUN pip install "numpy<2.0.0" "Pillow<10.0.0"
 RUN pip install -e adet
 
-RUN pip install openslide-python onnxruntime-gpu==1.10
+RUN pip install openslide-python onnxruntime-gpu==1.12
 
 # Set a fixed model cache directory.
 ENV FVCORE_CACHE="/tmp"
