@@ -22,17 +22,17 @@ To build the docker image go to the `docker` directory and run the following com
 ### Run inference
 Running the Docker image as follows automatically starts inference with default parameters on all SVS files located at `./data`:
 
-`docker run --rm -it -v ../code:/code -v /path/to/data:/data --shm-size 8gb --name avibloodcount umr-ds/avibloodcount`
+`docker run --rm -it -v /path/to/code:/code -v /path/to/data:/data --shm-size 8gb --name avibloodcount umr-ds/avibloodcount`
 
 To run with GPU support, do the following:
 
-`docker run --rm -it -v ../code:/code -v /path/to/data:/data --shm-size 8gb --name avibloodcount umr-ds/avibloodcount --gpu 0`
+`docker run --rm -it -v /path/to/code:/code -v /path/to/data:/data --shm-size 8gb --name avibloodcount --gpus 1 umr-ds/avibloodcount --gpu 0`
 
 In this example, the code will run on GPU with index 0.
 
 You can modify several parameters by passing them trailing the `docker run command`. For example, you can set the thresholds used for the countability classification and the instance segmentation models via `--cls_thresh` and `--det_thresh`, respectively. All available parameters can be listed by issuing 
 
-`docker run --rm -it -v ../code:/code -v /path/to/data:/data --shm-size 8gb --name avibloodcount umr-ds/avibloodcount --help`
+`docker run --rm -it -v /path/to/code:/code -v /path/to/data:/data --shm-size 8gb --name avibloodcount umr-ds/avibloodcount --help`
 
 
 ## Scientific Usage & Citation
