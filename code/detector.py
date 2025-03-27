@@ -37,6 +37,7 @@ class DetModel:
         self.cfg.merge_from_file(cfg)
         self.cfg.MODEL.WEIGHTS = model
         self.cfg.MODEL.DEVICE = "cpu" if gpu is None else "cuda"
+        self.cfg.MODEL.BiFPN.NORM = "BN" if gpu is None else "SyncBN"
 
         # initialize predictor
         self.predictor = BatchPredictor(self.cfg)
