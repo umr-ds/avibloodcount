@@ -9,6 +9,8 @@ from detector import DetModel
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from svs_dataset import SvsDataset
+from czi_dataset import CziDataset
+from vsi_dataset import VsiDataset
 
 
 def parse_args():
@@ -18,7 +20,7 @@ def parse_args():
     parser.add_argument(
         '--path',
         dest='path',
-        help='A directory or a single SVS file.',
+        help='A directory or a single SVS/CZI/VSI file.',
         default='/data/input/',
         type=str,
     )
@@ -78,17 +80,22 @@ def collate_fn(batch):
     return batch
 
 
-def main_loop(svs_files):
+def main_loop(files):
     os.makedirs(args.output_dir, exist_ok=True)
 
-    multi_file = len(svs_files) > 1
+    multi_file = len(files) > 1
 
     model = DetModel(cfg=args.cfg, gpu=args.gpu, model=args.det_model, thresh=args.det_thresh)
-    svs_loop = tqdm(svs_files, disable=not multi_file)
-    svs_loop.set_description("Overall")
-    for filename in svs_loop:
+    file_loop = tqdm(files, disable=not multi_file)
+    file_loop.set_description("Overall")
+    for filename in file_loop:
         # loc_start = time.time()
-        dataset = SvsDataset(os.path.join(args.path, filename), args.cls_model, args.cls_thresh)
+        if filename.endswith('svs'):
+            dataset = SvsDataset(os.path.join(args.path, filename), args.cls_model, args.cls_thresh)
+        if filename.endswith('czi'):
+            dataset = CziDataset(os.path.join(args.path, filename), args.cls_model, args.cls_thresh)
+        if filename.endswith('vsi'):
+            dataset = VsiDataset(os.path.join(args.path, filename), args.cls_model, args.cls_thresh)
         loader = DataLoader(dataset,
                             batch_size=8,
                             shuffle=False,
@@ -101,6 +108,7 @@ def main_loop(svs_files):
             if item:
                 images = [img['tile'][..., ::-1].squeeze(axis=0) for img in item]
                 model.predict(images)
+                
         counts = model.counts
         model.counts.update({'Overall tiles': len(dataset)})
         del counts[model.class_ids['5']]
@@ -113,19 +121,19 @@ def main_loop(svs_files):
 
 def get_input_files(path):
     if os.path.isfile(path):
-        if path.endswith((".svs", ".SVS")):
-            svs_files = [path]
+        if path.lower().endswith((".svs", ".czi", ".vsi")):
+            files = [path]
         else:
-            raise argparse.ArgumentTypeError(f"Expecting input files to be in SVS file format! Found "
+            raise argparse.ArgumentTypeError(f"Expecting input files to be in SVS, CZI or VSI file format! Found "
                                              f"'{os.path.splitext(path)[-1]}'.")
     elif os.path.isdir(path):
-        svs_files = [item for item in os.listdir(path) if item.endswith((".svs", ".SVS"))]
-        if not svs_files:
-            print(f"Warning: Directory {path} does not contain any SVS file!")
+        files = [item for item in os.listdir(path) if item.lower().endswith((".svs", ".czi", ".vsi"))]
+        if not files:
+            print(f"Warning: Directory {path} does not contain any SVS, CZI or VSI file!")
             return
     else:
         raise FileNotFoundError
-    return svs_files
+    return files
 
 
 if __name__ == '__main__':
