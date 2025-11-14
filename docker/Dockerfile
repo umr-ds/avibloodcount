@@ -47,6 +47,7 @@ RUN pip install "numpy<2.0.0" "Pillow<10.0.0"
 RUN pip install -e adet
 
 RUN pip install openslide-python onnxruntime-gpu==1.12
+RUN pip install pylibCZIrw==5.0.0 slideio==2.7.1
 
 # Set a fixed model cache directory.
 ENV FVCORE_CACHE="/tmp"
