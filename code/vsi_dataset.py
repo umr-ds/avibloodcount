@@ -47,7 +47,6 @@ class VsiDataset(Dataset):
     
             #read roi
             tile = self.scene.read_block(roi)            
-            tile = tile[:,:,::-1]
             tile = tile[np.newaxis, ...]
                         
             # Run model inference
